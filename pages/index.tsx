@@ -4,17 +4,23 @@ import Socials from "../components/Socials";
 import styles from "../styles/Home.module.css";
 
 export const getStaticProps = async () => {
-    const response = await fetch(`${process.env.API_HOST}/socials`);
-    const data = await response.json();
+    try {
+        const response = await fetch(`${process.env.API_HOST}/socials`);
+        const data = await response.json();
 
-    if (!data) {
-        return {
-            notFound: true,
+        if (!data) {
+            return {
+                notFound: true,
+            }
         }
-    }
 
-    return {
-        props: {socials: data},
+        return {
+            props: {socials: data},
+        }
+    } catch {
+        return {
+            props: {socials: null},
+        }
     }
 };
 const Home = ({socials}) => (
@@ -23,8 +29,8 @@ const Home = ({socials}) => (
             <title>Home</title>
         </Head>
         <div className="container">
-            <Heading text="Next.js Application" />
-            <Socials socials={socials} />
+            <Heading text="Next.js Application"/>
+            <Socials socials={socials}/>
         </div>
     </div>
 );
